@@ -141,7 +141,7 @@ public class TelaLogin extends javax.swing.JFrame {
         String login = txtLogin.getText();
         
           if ((login.equals("")) && (senha.equals(""))) {
-             CaixaDeDialogo.obterinstancia().exibirMensagem("Por favor, preencha os campos corretamente!", "Erro", 'e');
+             CaixaDeDialogo.obterinstancia().exibirMensagem("Por favor, é preciso fornecer um Usuário e uma senha!", "Erro", 'e');
              return;   
            }
         

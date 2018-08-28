@@ -16,14 +16,14 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author jonas
+ * @author Janquiel Kappler
  */
 public class ConnectionFactory {
     
     private final static String DRIVER = "org.postgresql.Driver";
-    private final static String URL = "jdbc:postgresql://192.168.3.5:5432/ordensservico";
+    private final static String URL = "jdbc:postgresql://localhost:5432/univates";
     private final static String USER = "postgres";
-    private final static String PASS = "abc123$";
+    private final static String PASS = "postgres";
     
     public static Connection con;
     public static Statement stmt;
@@ -32,7 +32,7 @@ public class ConnectionFactory {
          try {
             Connection con = getConnection();
             stmt = con.createStatement();
-            System.out.print("Conexão com Banco de Dados Criada!");
+            System.out.print("Conexão com Banco de Dados Criada!\n");
         } catch (Exception e) {
             System.out.print(e);
         }
@@ -93,5 +93,4 @@ public class ConnectionFactory {
             Logger.getLogger(ConnectionFactory.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
 }

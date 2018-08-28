@@ -5,6 +5,21 @@
  */
 package univates_bd;
 
+import connection.ConnectionFactory;
+import static connection.ConnectionFactory.con;
+import controle.UsuarioDao;
+import ferramentas.CaixaDeDialogo;
+import java.awt.Color;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import modelo.Usuario;
+
 /**
  *
  * @author Janquiel Kappler
@@ -12,10 +27,12 @@ package univates_bd;
 public class TelaLogin extends javax.swing.JFrame {
 
     /**
-     * Creates new form TelaLogin
+     * Creates new form viewLogin
      */
     public TelaLogin() {
         initComponents();
+        this.getContentPane().setBackground(Color.BLACK);
+        checkOnOff();
     }
 
     /**
@@ -27,58 +44,126 @@ public class TelaLogin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnLogin = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        lblLogin = new javax.swing.JLabel();
         txtLogin = new javax.swing.JTextField();
+        lblSenha = new javax.swing.JLabel();
         txtSenha = new javax.swing.JPasswordField();
+        btnEntrar = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        lblCapsLook = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Tela de Login");
+        setPreferredSize(new java.awt.Dimension(800, 600));
 
-        btnLogin.setText("ENTRAR");
+        lblLogin.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblLogin.setForeground(new java.awt.Color(255, 255, 255));
+        lblLogin.setText("Usuário");
 
-        jLabel1.setText("Bem-Vindo faça login para continuar");
+        txtLogin.setToolTipText("Digite seu usuário");
 
-        txtLogin.setText("Usuário");
-        txtLogin.setToolTipText("");
+        lblSenha.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblSenha.setForeground(new java.awt.Color(255, 255, 255));
+        lblSenha.setText("Senha");
 
-        txtSenha.setText("jPasswordField1");
+        txtSenha.setToolTipText("Digite sua senha");
+
+        btnEntrar.setBackground(new java.awt.Color(0, 102, 255));
+        btnEntrar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnEntrar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEntrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/login.png"))); // NOI18N
+        btnEntrar.setText("Entrar");
+        btnEntrar.setToolTipText("Entrar no jogo");
+        btnEntrar.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        btnEntrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEntrarActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/logounivates.png"))); // NOI18N
+
+        lblCapsLook.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblCapsLook.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblCapsLook.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                lblCapsLookKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(117, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(111, 111, 111))
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblCapsLook, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(138, 138, 138)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtSenha)
-                            .addComponent(txtLogin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(157, 157, 157)
-                        .addComponent(btnLogin)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(131, 131, 131)
+                        .addComponent(btnEntrar))
+                    .addComponent(lblSenha)
+                    .addComponent(txtLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblLogin))
+                .addGap(520, 520, 520))
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(86, 86, 86)
-                .addComponent(txtLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(160, 160, 160)
+                .addComponent(lblLogin)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnLogin)
-                .addContainerGap(102, Short.MAX_VALUE))
+                .addComponent(txtLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblSenha)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblCapsLook, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtSenha, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
+        // TODO add your handling code here:
+        String senha = new String(txtSenha.getPassword());
+        String login = txtLogin.getText();
+        
+          if ((login.equals("")) && (senha.equals(""))) {
+             CaixaDeDialogo.obterinstancia().exibirMensagem("Por favor, preencha os campos corretamente!", "Erro", 'e');
+             return;   
+           }
+        
+            boolean resposta = UsuarioDao.buscarUsuario(login,senha); 
+            System.out.println(resposta);
+        
+            if (resposta == true){
+             //JOptionPane.showMessageDialog(rootPane, "Login realizado com sucesso!");
+             TelaPrincipal t = new TelaPrincipal();
+             t.setVisible(true);
+             this.setVisible(false);
+
+            }else {
+            CaixaDeDialogo.obterinstancia().exibirMensagem("Usuário ou Senha incorretos, verifique!", "Atenção", 'a');
+            return;
+            }
+                  
+    }//GEN-LAST:event_btnEntrarActionPerformed
+
+    private void lblCapsLookKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lblCapsLookKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblCapsLookKeyPressed
 
     /**
      * @param args the command line arguments
@@ -106,6 +191,9 @@ public class TelaLogin extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(TelaLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -114,10 +202,40 @@ public class TelaLogin extends javax.swing.JFrame {
             }
         });
     }
+    
 
+    public void checkOnOff() {
+        Thread th = new Thread() {
+        public void run() {
+            for (;;) {
+                if (Toolkit.getDefaultToolkit().getLockingKeyState(KeyEvent.VK_CAPS_LOCK)) {
+                    lblCapsLook.setForeground(Color.GREEN);
+                    lblCapsLook.setText("Caps Look Ativado");
+                } else {
+                    lblCapsLook.setText(null);
+                }
+                try {
+                    sleep(100);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(TelaLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }                    
+            }
+        }
+    };th.start();
+}
+
+
+            
+            
+
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnLogin;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btnEntrar;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel lblCapsLook;
+    private javax.swing.JLabel lblLogin;
+    private javax.swing.JLabel lblSenha;
     private javax.swing.JTextField txtLogin;
     private javax.swing.JPasswordField txtSenha;
     // End of variables declaration//GEN-END:variables
